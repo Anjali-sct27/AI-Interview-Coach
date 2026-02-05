@@ -26,7 +26,9 @@ Live App:
 
 ## Developer
 Anjali S Nair
+
 B.Tech Student
+
 SCT College of Engineering
 
 GitHub: https://github.com/Anjali-sct27
