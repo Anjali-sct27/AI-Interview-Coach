@@ -23,3 +23,10 @@ An AI-powered web application to help users practice interview questions and get
 ## Demo
 Live App:  
  https://ai-interview-coach-yn0z.onrender.com
+
+## Developer
+Anjali S Nair
+B.Tech Student
+SCT College of Engineering
+
+GitHub: https://github.com/Anjali-sct27
