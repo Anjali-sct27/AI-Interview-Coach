@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>AI Interview Coach</title>
+
+    <style>
+
+        body {
+            background: linear-gradient(135deg, #020617, #0f172a);
+            color: white;
+            font-family: Arial, sans-serif;
+            padding: 40px;
+        }
+
+        .box {
+            background: #020617;
+            padding: 30px;
+            max-width: 750px;
+            margin: auto;
+            border-radius: 12px;
+            box-shadow: 0px 0px 25px rgba(0,0,0,0.5);
+        }
+
+        h1 {
+            text-align: center;
+            color: #38bdf8;
+        }
+
+        label {
+            margin-top: 15px;
+            display: block;
+            font-weight: bold;
+        }
+
+        select, textarea, button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 8px;
+            border-radius: 6px;
+            border: none;
+            font-size: 15px;
+        }
+
+        select, textarea {
+            background: #020617;
+            color: white;
+            border: 1px solid #1e293b;
+        }
+
+        textarea {
+            resize: vertical;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .clear-btn {
+            background: #dc2626;
+        }
+
+        .clear-btn:hover {
+            background: #b91c1c;
+        }
+
+        .mic-btn {
+            background: #16a34a;
+        }
+
+        .mic-btn:hover {
+            background: #15803d;
+        }
+
+        pre {
+            background: black;
+            padding: 15px;
+            border-radius: 6px;
+            white-space: pre-wrap;
+            margin-top: 15px;
+            border: 1px solid #1e293b;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 20px;
+            color: #94a3b8;
+            font-size: 14px;
+        }
+
+    </style>
+</head>
+
+
+<body>
+
+<div class="box">
+
+<h1>🎯 AI Interview Coach</h1>
+
+<form method="POST">
+
+<label>Select Question</label>
+
+<select name="question">
+
+{% for q in questions %}
+<option value="{{q}}" {% if q == selected %}selected{% endif %}>
+    {{q}}
+</option>
+{% endfor %}
+
+</select>
+
+
+<label>Your Answer</label>
+
+<textarea id="answerBox" name="answer" rows="6"
+placeholder="Type or speak your answer...">{{answer}}</textarea>
+
+
+<div class="btn-group">
+
+<button type="button" onclick="startRecording()" class="mic-btn">
+Start Recording
+</button>
+
+<button type="submit" name="submit">
+Get Feedback
+</button>
+
+<button type="submit" name="clear" class="clear-btn">
+Clear
+</button>
+
+</div>
+
+</form>
+
+
+{% if feedback %}
+<hr>
+
+<h3>📊 AI Feedback</h3>
+
+<pre>{{feedback}}</pre>
+
+{% endif %}
+
+</div>
+
+<footer>
+Built by Anjali | AI Interview Coach
+</footer>
+
+
+<script>
+
+let recognition;
+let isRecording = false;
+
+function startRecording() {
+
+    if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+        alert("Speech Recognition not supported in this browser. Use Chrome or Edge.");
+        return;
+    }
+
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+
+    recognition = new SpeechRecognition();
+
+    recognition.lang = "en-US";
+    recognition.continuous = false;
+    recognition.interimResults = false;
+
+    recognition.start();
+    isRecording = true;
+
+    alert("Recording started. Speak now...");
+
+    recognition.onresult = function(event) {
+
+        const text = event.results[0][0].transcript;
+
+        const box = document.getElementById("answerBox");
+
+        box.value = box.value + " " + text;
+    };
+
+    recognition.onerror = function(event) {
+        alert("❌ Error: " + event.error);
+    };
+
+    recognition.onend = function() {
+
+        if (isRecording) {
+            alert("Recording stopped.");
+            isRecording = false;
+        }
+    };
+}
+
+</script>
+
+</body>
+</html>
